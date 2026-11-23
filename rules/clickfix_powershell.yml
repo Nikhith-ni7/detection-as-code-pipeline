@@ -1,0 +1,21 @@
+title: Explorer Launches PowerShell With Encoded Command
+id: c94285bc-6b0f-468a-891b-e14d6877a141
+status: experimental
+description: Detects a process pattern consistent with some ClickFix activity. Explorer parentage alone cannot establish use of the Run dialog.
+author: Nikhith
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith: '\explorer.exe'
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains: ' -encodedcommand '
+  condition: selection
+falsepositives:
+  - Encoded administrative commands launched from Explorer
+level: medium
+tags:
+  - attack.t1059.001

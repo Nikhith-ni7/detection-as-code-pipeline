@@ -1,0 +1,5 @@
+[
+  {"event":{"Image":"C:\\Tools\\procdump64.exe","CommandLine":"procdump64.exe [redacted flags] lsass.exe [redacted path]"},"expected":true},
+  {"event":{"Image":"C:\\Tools\\procdump.exe","CommandLine":"procdump.exe [redacted flags] example.exe"},"expected":false},
+  {"event":{"Image":"C:\\Windows\\System32\\tasklist.exe","CommandLine":"tasklist.exe /FI \"IMAGENAME eq lsass.exe\""},"expected":false}
+]

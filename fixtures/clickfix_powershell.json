@@ -1,0 +1,14 @@
+[
+  {
+    "event": {"ParentImage": "C:\\Windows\\Explorer.EXE", "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell.exe -EncodedCommand <redacted>"},
+    "expected": true
+  },
+  {
+    "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Program Files\\PowerShell\\7\\pwsh.exe", "CommandLine": "pwsh.exe -NoProfile"},
+    "expected": false
+  },
+  {
+    "event": {"ParentImage": "C:\\Windows\\System32\\services.exe", "Image": "C:\\Program Files\\PowerShell\\7\\pwsh.exe", "CommandLine": "pwsh.exe -EncodedCommand <redacted>"},
+    "expected": false
+  }
+]

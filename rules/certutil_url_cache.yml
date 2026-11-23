@@ -1,0 +1,20 @@
+title: Certutil URL Cache Invocation With HTTP URL
+id: db6500a0-3e80-4a39-8d08-1652cb173a78
+status: experimental
+description: Flags Certutil URL cache operations referencing an HTTP or HTTPS URL for investigation.
+author: Nikhith
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\certutil.exe'
+    CommandLine|contains|all:
+      - ' -urlcache '
+      - 'http'
+  condition: selection
+falsepositives:
+  - Certificate administration and diagnostic workflows
+level: medium
+tags:
+  - attack.t1105

@@ -1,0 +1,20 @@
+title: ProcDump Invocation Referencing LSASS
+id: c3df17e2-22d4-4473-9298-5910a5f92906
+status: experimental
+description: Detects ProcDump process creation with an LSASS process name in the command line.
+author: Nikhith
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - '\procdump.exe'
+      - '\procdump64.exe'
+    CommandLine|contains: 'lsass.exe'
+  condition: selection
+falsepositives:
+  - Authorized incident response or debugging
+level: high
+tags:
+  - attack.t1003.001

@@ -1,0 +1,5 @@
+[
+  {"event":{"Image":"C:\\Windows\\System32\\certutil.exe","CommandLine":"certutil.exe -urlcache https://example.invalid/fixture"},"expected":true},
+  {"event":{"Image":"C:\\Windows\\System32\\certutil.exe","CommandLine":"certutil.exe -urlcache *"},"expected":false},
+  {"event":{"Image":"C:\\Windows\\System32\\certutil.exe","CommandLine":"certutil.exe -verify fixture.cer"},"expected":false}
+]
