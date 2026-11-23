@@ -1,0 +1,12 @@
+[
+  {"note": "RC4 ticket for a SQL service account",
+   "event": {"EventID": 4769, "ServiceName": "svc_sql", "TicketEncryptionType": "0x17", "Status": "0x0", "TargetUserName": "alex@LAB.LOCAL", "IpAddress": "::ffff:10.0.0.25"}, "expected": true},
+  {"note": "AES ticket for the same account",
+   "event": {"EventID": 4769, "ServiceName": "svc_sql", "TicketEncryptionType": "0x12", "Status": "0x0", "TargetUserName": "alex@LAB.LOCAL"}, "expected": false},
+  {"note": "RC4 ticket for a computer account",
+   "event": {"EventID": 4769, "ServiceName": "WS01$", "TicketEncryptionType": "0x17", "Status": "0x0", "TargetUserName": "alex@LAB.LOCAL"}, "expected": false},
+  {"note": "Failed request",
+   "event": {"EventID": 4769, "ServiceName": "svc_sql", "TicketEncryptionType": "0x17", "Status": "0x1B", "TargetUserName": "alex@LAB.LOCAL"}, "expected": false},
+  {"note": "Different event (TGT request)",
+   "event": {"EventID": 4768, "ServiceName": "krbtgt", "TicketEncryptionType": "0x17", "Status": "0x0", "TargetUserName": "alex"}, "expected": false}
+]

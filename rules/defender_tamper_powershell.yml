@@ -1,0 +1,38 @@
+title: Microsoft Defender Disabled or Excluded via PowerShell
+id: ae056b8e-cb98-4619-b566-ec4d960b11c4
+status: experimental
+description: |
+  Flags Set-MpPreference / Add-MpPreference turning off Defender protections or adding
+  exclusions. Attackers do this before dropping payloads (see the Backdoor HTTPS lab, which
+  used a Defender exclusion). Re-enabling a protection ($false) is filtered out.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith:
+        - '\powershell.exe'
+        - '\pwsh.exe'
+    - OriginalFileName:
+        - 'PowerShell.EXE'
+        - 'pwsh.dll'
+  selection_cmdlet:
+    CommandLine|contains:
+      - 'Set-MpPreference'
+      - 'Add-MpPreference'
+  selection_action:
+    CommandLine|contains:
+      - '-Disable'
+      - '-Exclusion'
+      - '-drtm'
+  filter_reenable:
+    CommandLine|contains: '$false'
+  condition: all of selection_* and not filter_reenable
+falsepositives:
+  - Endpoint administrators adding approved exclusions outside of Intune or GPO
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1562.001

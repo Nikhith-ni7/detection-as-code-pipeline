@@ -1,0 +1,7 @@
+name: Sentinel SecurityEvent table
+priority: 5
+transformations:
+  - id: security_event_table
+    type: set_state
+    key: query_table
+    val: SecurityEvent

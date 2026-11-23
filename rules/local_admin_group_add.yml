@@ -1,0 +1,32 @@
+title: Account Added to the Local Administrators Group via net.exe
+id: 7efdbb93-96a5-427b-b9c0-7c60221f04d1
+status: experimental
+description: |
+  Flags net localgroup administrators <user> /add, which attackers use to keep admin
+  access after compromise.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith:
+        - '\net.exe'
+        - '\net1.exe'
+    - OriginalFileName:
+        - 'net.exe'
+        - 'net1.exe'
+  selection_group:
+    CommandLine|contains|all:
+      - 'localgroup'
+      - 'administrators'
+  selection_add:
+    CommandLine|windash|contains: ' -add'
+  condition: all of selection_*
+falsepositives:
+  - Helpdesk staff granting local admin by hand instead of through group policy
+level: medium
+tags:
+  - attack.persistence
+  - attack.t1098.007

@@ -1,20 +1,30 @@
-title: Certutil URL Cache Invocation With HTTP URL
+title: Certutil Downloading a File From a URL
 id: db6500a0-3e80-4a39-8d08-1652cb173a78
 status: experimental
-description: Flags Certutil URL cache operations referencing an HTTP or HTTPS URL for investigation.
+description: |
+  Flags certutil used as a downloader (-urlcache or -verifyctl with an HTTP/HTTPS URL).
+  Matches both dash and slash forms of the flags, and renamed copies via OriginalFileName.
 author: Nikhith
+date: 2026-11-23
 logsource:
   category: process_creation
   product: windows
 detection:
-  selection:
-    Image|endswith: '\certutil.exe'
-    CommandLine|contains|all:
-      - ' -urlcache '
-      - 'http'
-  condition: selection
+  selection_img:
+    - Image|endswith: '\certutil.exe'
+    - OriginalFileName: 'CertUtil.exe'
+  selection_flag:
+    CommandLine|windash|contains:
+      - ' -urlcache'
+      - ' -verifyctl'
+  selection_url:
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+  condition: all of selection_*
 falsepositives:
-  - Certificate administration and diagnostic workflows
+  - Certificate administration that fetches CRLs or certificates over HTTP
 level: medium
 tags:
+  - attack.command_and_control
   - attack.t1105

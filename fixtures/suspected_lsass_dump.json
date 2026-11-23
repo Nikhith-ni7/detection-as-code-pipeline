@@ -1,5 +1,12 @@
 [
-  {"event":{"Image":"C:\\Tools\\procdump64.exe","CommandLine":"procdump64.exe [redacted flags] lsass.exe [redacted path]"},"expected":true},
-  {"event":{"Image":"C:\\Tools\\procdump.exe","CommandLine":"procdump.exe [redacted flags] example.exe"},"expected":false},
-  {"event":{"Image":"C:\\Windows\\System32\\tasklist.exe","CommandLine":"tasklist.exe /FI \"IMAGENAME eq lsass.exe\""},"expected":false}
+  {"note": "Dump by process name",
+   "event": {"Image": "C:\\Tools\\procdump64.exe", "CommandLine": "procdump64.exe -accepteula -ma lsass.exe C:\\Windows\\Temp\\l.dmp"}, "expected": true},
+  {"note": "Dump by PID instead of name",
+   "event": {"Image": "C:\\Tools\\procdump.exe", "CommandLine": "procdump.exe -accepteula -ma 724 C:\\Windows\\Temp\\out.dmp"}, "expected": true},
+  {"note": "Renamed ProcDump",
+   "event": {"Image": "C:\\Users\\Public\\dbg.exe", "OriginalFileName": "procdump", "CommandLine": "dbg.exe -accepteula -ma lsass.exe d.dmp"}, "expected": true},
+  {"note": "ProcDump mini dump of an app (no -ma, not lsass)",
+   "event": {"Image": "C:\\Tools\\procdump.exe", "CommandLine": "procdump.exe -e 1 -f \"\" outlook.exe"}, "expected": false},
+  {"note": "Listing lsass with tasklist",
+   "event": {"Image": "C:\\Windows\\System32\\tasklist.exe", "CommandLine": "tasklist.exe /FI \"IMAGENAME eq lsass.exe\""}, "expected": false}
 ]

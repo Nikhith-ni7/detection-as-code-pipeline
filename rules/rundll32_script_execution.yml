@@ -1,0 +1,28 @@
+title: Rundll32 Executing Script or Remote Content
+id: 6da7183d-50f6-4723-ad7e-0db70c7c2d61
+status: experimental
+description: |
+  Flags rundll32.exe used to run JavaScript through mshtml (RunHTMLApplication) or to load
+  content from a URL. Both are proxy-execution tricks that avoid starting a script host.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith: '\rundll32.exe'
+    - OriginalFileName: 'RUNDLL32.EXE'
+  selection_cli:
+    CommandLine|contains:
+      - 'javascript:'
+      - 'RunHTMLApplication'
+      - 'http://'
+      - 'https://'
+  condition: all of selection_*
+falsepositives:
+  - Rare; some installers pass URLs to rundll32 for shell link handling (url.dll,FileProtocolHandler)
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1218.011

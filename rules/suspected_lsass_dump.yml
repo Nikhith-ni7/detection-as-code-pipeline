@@ -1,20 +1,30 @@
-title: ProcDump Invocation Referencing LSASS
+title: ProcDump Creating a Memory Dump of LSASS
 id: c3df17e2-22d4-4473-9298-5910a5f92906
 status: experimental
-description: Detects ProcDump process creation with an LSASS process name in the command line.
+description: |
+  Flags ProcDump (including renamed copies, via OriginalFileName) dumping LSASS by name,
+  or taking a full memory dump (-ma) of any process. Attackers often pass the LSASS PID
+  instead of its name, so the -ma branch catches that case at the cost of more noise.
 author: Nikhith
+date: 2026-11-23
 logsource:
   category: process_creation
   product: windows
 detection:
-  selection:
-    Image|endswith:
-      - '\procdump.exe'
-      - '\procdump64.exe'
-    CommandLine|contains: 'lsass.exe'
-  condition: selection
+  selection_img:
+    - Image|endswith:
+        - '\procdump.exe'
+        - '\procdump64.exe'
+        - '\procdump64a.exe'
+    - OriginalFileName: 'procdump'
+  selection_target_lsass:
+    CommandLine|contains: 'lsass'
+  selection_target_fulldump:
+    CommandLine|windash|contains: ' -ma '
+  condition: selection_img and 1 of selection_target_*
 falsepositives:
-  - Authorized incident response or debugging
+  - Authorized incident response or application debugging with full dumps
 level: high
 tags:
+  - attack.credential_access
   - attack.t1003.001

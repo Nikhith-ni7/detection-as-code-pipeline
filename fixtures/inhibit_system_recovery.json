@@ -1,0 +1,18 @@
+[
+  {"note": "vssadmin delete shadows",
+   "event": {"Image": "C:\\Windows\\System32\\vssadmin.exe", "CommandLine": "vssadmin.exe Delete Shadows /All /Quiet"}, "expected": true},
+  {"note": "Shrinking shadow storage to wipe copies",
+   "event": {"Image": "C:\\Windows\\System32\\vssadmin.exe", "CommandLine": "vssadmin resize shadowstorage /for=c: /on=c: /maxsize=401MB"}, "expected": true},
+  {"note": "wmic shadowcopy delete",
+   "event": {"Image": "C:\\Windows\\System32\\wbem\\WMIC.exe", "CommandLine": "wmic shadowcopy delete /nointeractive"}, "expected": true},
+  {"note": "wbadmin catalog deletion",
+   "event": {"Image": "C:\\Windows\\System32\\wbadmin.exe", "CommandLine": "wbadmin delete catalog -quiet"}, "expected": true},
+  {"note": "Disable recovery mode",
+   "event": {"Image": "C:\\Windows\\System32\\bcdedit.exe", "CommandLine": "bcdedit /set {default} recoveryenabled No"}, "expected": true},
+  {"note": "PowerShell WMI shadow copy delete",
+   "event": {"Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell Get-WmiObject Win32_Shadowcopy | ForEach-Object { $_.Delete() }"}, "expected": true},
+  {"note": "Listing shadow copies",
+   "event": {"Image": "C:\\Windows\\System32\\vssadmin.exe", "CommandLine": "vssadmin list shadows"}, "expected": false},
+  {"note": "Re-enabling recovery",
+   "event": {"Image": "C:\\Windows\\System32\\bcdedit.exe", "CommandLine": "bcdedit /set {default} recoveryenabled yes"}, "expected": false}
+]

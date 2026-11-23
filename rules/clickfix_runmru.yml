@@ -1,0 +1,33 @@
+title: Suspicious Command Typed Into the Run Dialog (RunMRU)
+id: cf855e16-a688-491b-97df-816218578c98
+status: experimental
+description: |
+  Windows stores each command typed into the Run dialog under the RunMRU registry key.
+  ClickFix lures paste a script launcher there, so a RunMRU value containing PowerShell,
+  mshta, a URL or a download cradle is strong evidence of the lure being followed.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection_key:
+    TargetObject|contains: '\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU'
+  selection_value:
+    Details|contains:
+      - 'powershell'
+      - 'pwsh'
+      - 'mshta'
+      - 'cmd /c'
+      - 'cmd.exe /c'
+      - 'curl '
+      - 'http'
+      - 'rundll32'
+      - 'conhost'
+  condition: all of selection_*
+falsepositives:
+  - Users who routinely launch PowerShell or URLs from the Run dialog
+level: high
+tags:
+  - attack.execution
+  - attack.t1204.004

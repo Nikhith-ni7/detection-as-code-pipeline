@@ -1,0 +1,12 @@
+[
+  {"note": "Backdoor user added to administrators",
+   "event": {"Image": "C:\\Windows\\System32\\net.exe", "CommandLine": "net localgroup administrators svc_backup /add"}, "expected": true},
+  {"note": "net1.exe child process",
+   "event": {"Image": "C:\\Windows\\System32\\net1.exe", "CommandLine": "C:\\Windows\\system32\\net1 localgroup Administrators helpdesk2 /add"}, "expected": true},
+  {"note": "Listing group members",
+   "event": {"Image": "C:\\Windows\\System32\\net.exe", "CommandLine": "net localgroup administrators"}, "expected": false},
+  {"note": "Removing a member",
+   "event": {"Image": "C:\\Windows\\System32\\net.exe", "CommandLine": "net localgroup administrators olduser /delete"}, "expected": false},
+  {"note": "Adding to a non-admin group",
+   "event": {"Image": "C:\\Windows\\System32\\net.exe", "CommandLine": "net localgroup \"Remote Desktop Users\" alex /add"}, "expected": false}
+]

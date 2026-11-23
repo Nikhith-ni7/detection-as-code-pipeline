@@ -1,21 +1,51 @@
-title: Explorer Launches PowerShell With Encoded Command
+title: Explorer Launches PowerShell With ClickFix-Style Arguments
 id: c94285bc-6b0f-468a-891b-e14d6877a141
 status: experimental
-description: Detects a process pattern consistent with some ClickFix activity. Explorer parentage alone cannot establish use of the Run dialog.
+description: |
+  Flags PowerShell started directly by Explorer with hidden-window, encoded-command or
+  download-and-execute arguments. ClickFix lures make the victim paste a command into the
+  Run dialog (Win+R), which starts it as a child of explorer.exe.
+  Explorer parentage alone cannot prove the Run dialog was used; pair with the RunMRU rule.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026
 author: Nikhith
+date: 2026-11-23
 logsource:
   category: process_creation
   product: windows
 detection:
-  selection:
+  selection_parent:
     ParentImage|endswith: '\explorer.exe'
-    Image|endswith:
-      - '\powershell.exe'
-      - '\pwsh.exe'
-    CommandLine|contains: ' -encodedcommand '
-  condition: selection
+  selection_img:
+    - Image|endswith:
+        - '\powershell.exe'
+        - '\pwsh.exe'
+    - OriginalFileName:
+        - 'PowerShell.EXE'
+        - 'pwsh.dll'
+  selection_cli_flags:
+    CommandLine|windash|contains:
+      - ' -e '
+      - ' -ec '
+      - ' -enc'
+      - ' -w hidden'
+      - ' -w h '
+      - ' -windowstyle h'
+  selection_cli_payload:
+    CommandLine|contains:
+      - 'iex'
+      - 'invoke-expression'
+      - 'iwr '
+      - 'invoke-webrequest'
+      - 'irm '
+      - 'invoke-restmethod'
+      - 'downloadstring'
+      - 'frombase64string'
+  condition: selection_parent and selection_img and 1 of selection_cli_*
 falsepositives:
-  - Encoded administrative commands launched from Explorer
+  - Administrators running encoded or hidden PowerShell from the Run dialog
 level: medium
 tags:
+  - attack.execution
   - attack.t1059.001
+  - attack.t1204.004

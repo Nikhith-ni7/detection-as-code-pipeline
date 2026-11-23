@@ -1,0 +1,28 @@
+title: Mshta Running a Remote or Inline Script
+id: babaecf1-2393-4e28-a49d-60ab6c0abfc0
+status: experimental
+description: |
+  Flags mshta.exe executing an HTA from a URL or inline javascript:/vbscript: code, a common
+  ClickFix and malvertising payload launcher.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith: '\mshta.exe'
+    - OriginalFileName: 'MSHTA.EXE'
+  selection_cli:
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+      - 'javascript:'
+      - 'vbscript:'
+  condition: all of selection_*
+falsepositives:
+  - Legacy line-of-business HTA applications hosted on an intranet web server
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1218.005

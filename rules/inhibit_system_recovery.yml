@@ -1,0 +1,49 @@
+title: Shadow Copy or Backup Deletion Before Ransomware
+id: b9373449-cef2-4728-bea0-ff61d5519d7f
+status: experimental
+description: |
+  Flags the built-in commands ransomware operators use to delete shadow copies and backups
+  or disable Windows recovery right before encryption.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_vssadmin_resize:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'resize'
+      - 'shadowstorage'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_wbadmin:
+    Image|endswith: '\wbadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'catalog'
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains: 'recoveryenabled no'
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+    CommandLine|contains|all:
+      - 'win32_shadowcopy'
+      - 'delete'
+  condition: 1 of selection_*
+falsepositives:
+  - Backup administrators deliberately clearing old shadow copies
+level: high
+tags:
+  - attack.impact
+  - attack.t1490

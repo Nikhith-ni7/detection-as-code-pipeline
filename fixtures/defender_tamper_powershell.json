@@ -1,0 +1,14 @@
+[
+  {"note": "Real-time protection turned off",
+   "event": {"Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell Set-MpPreference -DisableRealtimeMonitoring $true"}, "expected": true},
+  {"note": "Folder exclusion added (as in the Backdoor HTTPS lab)",
+   "event": {"Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell -c Add-MpPreference -ExclusionPath C:\\Users\\Public"}, "expected": true},
+  {"note": "Parameter alias -drtm",
+   "event": {"Image": "C:\\Program Files\\PowerShell\\7\\pwsh.exe", "CommandLine": "pwsh -c Set-MpPreference -drtm 1"}, "expected": true},
+  {"note": "Turning protection back on",
+   "event": {"Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell Set-MpPreference -DisableRealtimeMonitoring $false"}, "expected": false},
+  {"note": "Reading Defender settings",
+   "event": {"Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell Get-MpPreference | Select ExclusionPath"}, "expected": false},
+  {"note": "Signature update",
+   "event": {"Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "CommandLine": "powershell Update-MpSignature"}, "expected": false}
+]

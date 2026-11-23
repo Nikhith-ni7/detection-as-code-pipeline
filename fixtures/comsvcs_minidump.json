@@ -1,0 +1,12 @@
+[
+  {"note": "MiniDump export by name",
+   "event": {"Image": "C:\\Windows\\System32\\rundll32.exe", "CommandLine": "rundll32.exe C:\\Windows\\System32\\comsvcs.dll, MiniDump 724 C:\\Windows\\Temp\\l.dmp full"}, "expected": true},
+  {"note": "MiniDump by ordinal",
+   "event": {"Image": "C:\\Windows\\System32\\rundll32.exe", "CommandLine": "rundll32 comsvcs.dll #24 724 C:\\Users\\Public\\x.dmp full"}, "expected": true},
+  {"note": "Renamed rundll32",
+   "event": {"Image": "C:\\Users\\Public\\r.exe", "OriginalFileName": "RUNDLL32.EXE", "CommandLine": "r.exe comsvcs.dll,MiniDump 724 x.dmp full"}, "expected": true},
+  {"note": "Normal rundll32 control panel call",
+   "event": {"Image": "C:\\Windows\\System32\\rundll32.exe", "CommandLine": "rundll32.exe shell32.dll,Control_RunDLL desk.cpl"}, "expected": false},
+  {"note": "comsvcs registration without MiniDump",
+   "event": {"Image": "C:\\Windows\\System32\\regsvr32.exe", "CommandLine": "regsvr32 /s comsvcs.dll"}, "expected": false}
+]

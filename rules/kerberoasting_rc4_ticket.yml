@@ -1,0 +1,29 @@
+title: Kerberos Service Ticket Requested With RC4 Encryption
+id: 1ae1bafc-8580-465e-bd63-f7da2ffde1ac
+status: experimental
+description: |
+  Flags successful TGS requests (event 4769) for user service accounts with RC4-HMAC (0x17).
+  Kerberoasting tools request RC4 tickets because they crack faster offline. Machine accounts
+  and krbtgt are excluded. In production, alert on one account requesting many of these in a
+  short window rather than on single events.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4769
+    TicketEncryptionType: '0x17'
+    Status: '0x0'
+  filter_machine:
+    ServiceName|endswith: '$'
+  filter_krbtgt:
+    ServiceName: 'krbtgt'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Legacy applications or service accounts that still only support RC4
+level: medium
+tags:
+  - attack.credential_access
+  - attack.t1558.003

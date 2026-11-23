@@ -1,0 +1,36 @@
+title: Scheduled Task Created to Run From a User-Writable Path or Script Host
+id: d168d6ee-72c7-4ed6-8093-8010a6ceb2e1
+status: experimental
+description: |
+  Flags schtasks /create where the task runs something from AppData, Temp, Public or
+  ProgramData, or launches a script host or URL. A common persistence step after initial access.
+author: Nikhith
+date: 2026-11-23
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith: '\schtasks.exe'
+    - OriginalFileName: 'schtasks.exe'
+  selection_create:
+    CommandLine|windash|contains: ' -create '
+  selection_payload:
+    CommandLine|contains:
+      - '\AppData\'
+      - '\Temp\'
+      - '\Users\Public\'
+      - '\ProgramData\'
+      - 'powershell'
+      - 'pwsh'
+      - 'mshta'
+      - 'rundll32'
+      - 'cmd /c'
+      - 'http'
+  condition: all of selection_*
+falsepositives:
+  - Software updaters that install per-user tasks under AppData (for example browser or chat app updaters)
+level: medium
+tags:
+  - attack.persistence
+  - attack.t1053.005

